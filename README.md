@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# Counter Toast App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A focused React + TypeScript application built as a take-home assignment for Yendou.
 
-Currently, two official plugins are available:
+**Live demo:** [counter-toast-app.vercel.app](#) _(link after deploy)_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What it does
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Displays a counter starting at zero
+- Increments on button click, with a toast notification on every action
+- Toast matches the provided Figma design exactly
+- Global state accessible from anywhere in the tree
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Tool | Version | Role |
+|---|---|---|
+| Vite | 6 | Build tool and dev server |
+| React | 19 | UI framework |
+| TypeScript | 5 | Strict mode, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` |
+| Chakra UI | 3 | Component primitives and Toaster |
+| Framer Motion | 12 | All animations — no CSS transitions used |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Architecture
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+_To be written after implementation._
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Animation decisions
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+_To be written after implementation._
+
+## Accessibility
+
+_To be written after implementation._
+
+## TypeScript strictness
+
+_To be written after implementation._
+
+## Trade-offs at production scale
+
+_To be written after implementation._
