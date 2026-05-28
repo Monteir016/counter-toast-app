@@ -1,36 +1,41 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { Button, Flex, Text, Box } from '@chakra-ui/react'
+import { Button, Flex, Box, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useCounter } from '../hooks/useCounter'
 import { toaster } from '../toaster'
-const tapAnimation = {
-  whileTap: { scale: 0.94 },
-  transition: { type: 'spring' as const, stiffness: 400, damping: 17 },
-}
 
-interface KeyHintProps {
+interface ShortcutHintProps {
+  keys: string
   label: string
 }
 
-function KeyHint({ label }: KeyHintProps) {
+function ShortcutHint({ keys, label }: ShortcutHintProps) {
   return (
-    <Text
-      as="kbd"
-      fontSize="10px"
-      fontFamily="mono"
-      color="brand.slate"
-      bg="brand.tint"
-      border="1px solid"
-      borderColor="#cccccc"
-      borderRadius="4px"
-      px="5px"
-      py="2px"
-      lineHeight="1"
-      userSelect="none"
-    >
-      {label}
-    </Text>
+    <Flex align="center" gap={1}>
+      <Box
+        as="kbd"
+        fontSize="10px"
+        fontFamily="mono"
+        color="#686a7d"
+        border="1px solid #cccccc"
+        borderRadius="3px"
+        px="5px"
+        py="1px"
+        lineHeight="1.4"
+        userSelect="none"
+      >
+        {keys}
+      </Box>
+      <Text fontSize="10px" color="#9697a2">
+        {label}
+      </Text>
+    </Flex>
   )
+}
+
+const tapAnimation = {
+  whileTap: { scale: 0.94 },
+  transition: { type: 'spring' as const, stiffness: 400, damping: 17 },
 }
 
 export function CounterControls() {
@@ -48,16 +53,9 @@ export function CounterControls() {
 
   const showToast = useCallback((title: string, description: string) => {
     if (toastIdRef.current && toaster.isVisible(toastIdRef.current)) {
-      toaster.update(toastIdRef.current, {
-        title,
-        description,
-      })
+      toaster.update(toastIdRef.current, { title, description })
     } else {
-      toastIdRef.current = toaster.create({
-        title,
-        description,
-        duration: 3000,
-      })
+      toastIdRef.current = toaster.create({ title, description, duration: 3000 })
     }
   }, [])
 
@@ -93,88 +91,82 @@ export function CounterControls() {
   }, [handleIncrement, handleDecrement, handleReset])
 
   return (
-    <Flex direction="column" align="center" gap={4} w="full">
+    <Flex direction="column" gap={3} w="full">
       {/* Primary action */}
-      <Flex direction="column" align="center" gap={2}>
-        <motion.div {...tapAnimation}>
-          <Button
-            size="lg"
-            bg="brand.red"
-            color="white"
-            px={10}
-            fontWeight="600"
-            fontSize="lg"
-            borderRadius="8px"
-            _hover={{ bg: '#e02d31' }}
-            _focusVisible={{
-              outline: '2px solid',
-              outlineColor: 'brand.red',
-              outlineOffset: '3px',
-            }}
-            onClick={handleIncrement}
-            aria-label={`Increment counter, current value is ${count}`}
-          >
-            +1
-          </Button>
-        </motion.div>
-        <KeyHint label="+" />
-      </Flex>
+      <motion.div {...tapAnimation} style={{ width: '100%' }}>
+        <Button
+          w="full"
+          size="lg"
+          bg="brand.red"
+          color="white"
+          fontWeight="600"
+          fontSize="md"
+          borderRadius="8px"
+          _hover={{ bg: '#e02d31' }}
+          _focusVisible={{
+            outline: '2px solid',
+            outlineColor: 'brand.red',
+            outlineOffset: '3px',
+          }}
+          onClick={handleIncrement}
+          aria-label={`Increment counter, current value is ${count}`}
+        >
+          +1
+        </Button>
+      </motion.div>
 
       {/* Secondary actions */}
-      <Flex gap={3}>
-        <Flex direction="column" align="center" gap={2}>
-          <motion.div {...tapAnimation}>
-            <Button
-              size="sm"
-              variant="outline"
-              borderColor="#cccccc"
-              color="brand.dark"
-              borderRadius="8px"
-              fontWeight="500"
-              _hover={{ bg: 'brand.tint' }}
-              _focusVisible={{
-                outline: '2px solid',
-                outlineColor: 'brand.purple',
-                outlineOffset: '3px',
-              }}
-              onClick={handleDecrement}
-              aria-label={`Decrement counter, current value is ${count}`}
-            >
-              −1
-            </Button>
-          </motion.div>
-          <KeyHint label="-" />
-        </Flex>
+      <Flex gap={2} w="full">
+        <motion.div {...tapAnimation} style={{ flex: 1 }}>
+          <Button
+            w="full"
+            size="md"
+            variant="outline"
+            borderColor="#cccccc"
+            color="brand.dark"
+            borderRadius="8px"
+            fontWeight="500"
+            _hover={{ bg: 'brand.tint' }}
+            _focusVisible={{
+              outline: '2px solid',
+              outlineColor: 'brand.purple',
+              outlineOffset: '3px',
+            }}
+            onClick={handleDecrement}
+            aria-label={`Decrement counter, current value is ${count}`}
+          >
+            −1
+          </Button>
+        </motion.div>
 
-        <Flex direction="column" align="center" gap={2}>
-          <motion.div {...tapAnimation}>
-            <Button
-              size="sm"
-              variant="ghost"
-              color="brand.slate"
-              borderRadius="8px"
-              fontWeight="500"
-              _hover={{ bg: 'brand.tint', color: 'brand.dark' }}
-              _focusVisible={{
-                outline: '2px solid',
-                outlineColor: 'brand.purple',
-                outlineOffset: '3px',
-              }}
-              onClick={handleReset}
-              aria-label="Reset counter to zero"
-            >
-              Reset
-            </Button>
-          </motion.div>
-          <KeyHint label="r" />
-        </Flex>
+        <motion.div {...tapAnimation} style={{ flex: 1 }}>
+          <Button
+            w="full"
+            size="md"
+            variant="outline"
+            borderColor="#cccccc"
+            color="brand.dark"
+            borderRadius="8px"
+            fontWeight="500"
+            _hover={{ bg: 'brand.tint' }}
+            _focusVisible={{
+              outline: '2px solid',
+              outlineColor: 'brand.purple',
+              outlineOffset: '3px',
+            }}
+            onClick={handleReset}
+            aria-label="Reset counter to zero"
+          >
+            Reset
+          </Button>
+        </motion.div>
       </Flex>
 
-      <Box mt={1}>
-        <Text fontSize="xs" color="brand.neutral" textAlign="center">
-          Keyboard shortcuts active
-        </Text>
-      </Box>
+      <Flex justify="center" gap={4} pt={1}>
+        <ShortcutHint keys="+" label="increment" />
+        <ShortcutHint keys="-" label="decrement" />
+        <ShortcutHint keys="r" label="reset" />
+      </Flex>
     </Flex>
   )
 }

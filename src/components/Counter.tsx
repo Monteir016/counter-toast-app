@@ -6,7 +6,7 @@ export function Counter() {
   const { count } = useCounter()
 
   return (
-    <Box textAlign="center">
+    <Box textAlign="center" w="full">
       <Text
         fontSize="sm"
         fontWeight="500"
