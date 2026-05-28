@@ -6,29 +6,16 @@ import { Counter } from './components/Counter'
 import { CounterControls } from './components/CounterControls'
 import { CounterToast } from './components/CounterToast'
 import { toaster } from './toaster'
+import yendouLogo from './assets/yendou.png'
 
 function YendouLogo() {
   return (
-    <Flex align="center" gap="8px">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect width="28" height="28" rx="6" fill="#ff3337" />
-        <path
-          d="M9 8l5 7v5M19 8l-5 7"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <Text
-        fontWeight="600"
-        fontSize="18px"
-        color="#404254"
-        letterSpacing="-0.02em"
-      >
-        Yendou
-      </Text>
-    </Flex>
+    <img
+      src={yendouLogo}
+      alt="Yendou"
+      height={32}
+      style={{ height: '32px', width: 'auto' }}
+    />
   )
 }
 

@@ -26,25 +26,31 @@ export function Counter() {
         aria-live="polite"
         aria-atomic="true"
       >
-        <AnimatePresence mode="popLayout">
-          <motion.span
-            key={count}
-            initial={{ y: -32, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 32, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            style={{
-              display: 'inline-block',
-              fontSize: '96px',
-              fontWeight: 600,
-              lineHeight: 1,
-              color: '#404254',
-              fontVariantNumeric: 'tabular-nums',
-            }}
-          >
-            {count}
-          </motion.span>
-        </AnimatePresence>
+        <motion.div
+          animate={{ color: count < 0 ? '#ff3337' : '#404254' }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          style={{ display: 'inline-block' }}
+        >
+          <AnimatePresence mode="popLayout">
+            <motion.span
+              key={count}
+              initial={{ y: -32, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 32, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              style={{
+                display: 'inline-block',
+                fontSize: '96px',
+                fontWeight: 600,
+                lineHeight: 1,
+                color: 'inherit',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              {count}
+            </motion.span>
+          </AnimatePresence>
+        </motion.div>
       </Flex>
     </Box>
   )
