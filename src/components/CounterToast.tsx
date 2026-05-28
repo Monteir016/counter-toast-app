@@ -8,13 +8,13 @@ interface CounterToastProps {
 
 function CheckCircleIcon() {
   return (
+    <Box as="span" flexShrink={0} display="inline-flex">
     <svg
       width="24"
       height="24"
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      flexShrink={0}
     >
       <circle cx="12" cy="12" r="10" stroke="#74C898" strokeWidth="1.5" />
       <path
@@ -25,6 +25,7 @@ function CheckCircleIcon() {
         strokeLinejoin="round"
       />
     </svg>
+    </Box>
   )
 }
 

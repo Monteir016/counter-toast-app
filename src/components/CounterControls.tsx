@@ -3,8 +3,6 @@ import { Button, Flex, Text, Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useCounter } from '../hooks/useCounter'
 import { toaster } from '../toaster'
-import { CounterToast } from './CounterToast'
-
 const tapAnimation = {
   whileTap: { scale: 0.94 },
   transition: { type: 'spring' as const, stiffness: 400, damping: 17 },
@@ -51,12 +49,14 @@ export function CounterControls() {
   const showToast = useCallback((title: string, description: string) => {
     if (toastIdRef.current && toaster.isVisible(toastIdRef.current)) {
       toaster.update(toastIdRef.current, {
-        render: () => <CounterToast title={title} description={description} />,
+        title,
+        description,
       })
     } else {
       toastIdRef.current = toaster.create({
+        title,
+        description,
         duration: 3000,
-        render: () => <CounterToast title={title} description={description} />,
       })
     }
   }, [])

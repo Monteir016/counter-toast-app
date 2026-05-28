@@ -1,9 +1,10 @@
-import { Box, Divider, Flex, Text } from '@chakra-ui/react'
+import { Box, Flex, Separator, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { Toaster } from '@chakra-ui/react'
 import { CounterProvider } from './context/CounterProvider'
 import { Counter } from './components/Counter'
 import { CounterControls } from './components/CounterControls'
+import { CounterToast } from './components/CounterToast'
 import { toaster } from './toaster'
 
 function YendouLogo() {
@@ -44,7 +45,7 @@ const headerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.4, ease: 'easeOut' },
+    transition: { duration: 0.4, ease: 'easeOut' as const },
   },
 }
 
@@ -86,7 +87,7 @@ function App() {
             <Flex direction="column" align="center" gap={8}>
               <Counter />
 
-              <Divider borderColor="#e8e8e8" />
+              <Separator borderColor="#e8e8e8" />
 
               <CounterControls />
             </Flex>
@@ -105,7 +106,14 @@ function App() {
         </motion.div>
       </Flex>
 
-      <Toaster toaster={toaster} />
+      <Toaster toaster={toaster}>
+        {(toast) => (
+          <CounterToast
+            title={String(toast.title ?? '')}
+            description={String(toast.description ?? '')}
+          />
+        )}
+      </Toaster>
     </CounterProvider>
   )
 }
