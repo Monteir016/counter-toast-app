@@ -1,7 +1,9 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { Button, Flex, Text, Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useCounter } from '../hooks/useCounter'
+import { toaster } from '../toaster'
+import { CounterToast } from './CounterToast'
 
 const tapAnimation = {
   whileTap: { scale: 0.94 },
@@ -21,7 +23,7 @@ function KeyHint({ label }: KeyHintProps) {
       color="brand.slate"
       bg="brand.tint"
       border="1px solid"
-      borderColor="brand.border"
+      borderColor="#cccccc"
       borderRadius="4px"
       px="5px"
       py="2px"
@@ -36,19 +38,59 @@ function KeyHint({ label }: KeyHintProps) {
 export function CounterControls() {
   const { count, increment, decrement, reset } = useCounter()
 
+  // Mirror count into a ref so callbacks always read the latest value
+  // without needing to be recreated on every count change.
+  const countRef = useRef(count)
+  useEffect(() => {
+    countRef.current = count
+  }, [count])
+
+  // Track the active toast ID to deduplicate rapid clicks
+  const toastIdRef = useRef<string | null>(null)
+
+  const showToast = useCallback((title: string, description: string) => {
+    if (toastIdRef.current && toaster.isVisible(toastIdRef.current)) {
+      toaster.update(toastIdRef.current, {
+        render: () => <CounterToast title={title} description={description} />,
+      })
+    } else {
+      toastIdRef.current = toaster.create({
+        duration: 3000,
+        render: () => <CounterToast title={title} description={description} />,
+      })
+    }
+  }, [])
+
+  const handleIncrement = useCallback(() => {
+    increment()
+    const next = countRef.current + 1
+    showToast('Incremented', `Counter is now ${next}`)
+  }, [increment, showToast])
+
+  const handleDecrement = useCallback(() => {
+    decrement()
+    const next = countRef.current - 1
+    showToast('Decremented', `Counter is now ${next}`)
+  }, [decrement, showToast])
+
+  const handleReset = useCallback(() => {
+    reset()
+    showToast('Reset', 'Counter is back to 0')
+  }, [reset, showToast])
+
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement).tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
-      if (e.key === '+' || e.key === '=') increment()
-      if (e.key === '-') decrement()
-      if (e.key === 'r' || e.key === 'R') reset()
+      if (e.key === '+' || e.key === '=') handleIncrement()
+      if (e.key === '-') handleDecrement()
+      if (e.key === 'r' || e.key === 'R') handleReset()
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [increment, decrement, reset])
+  }, [handleIncrement, handleDecrement, handleReset])
 
   return (
     <Flex direction="column" align="center" gap={4} w="full">
@@ -69,7 +111,7 @@ export function CounterControls() {
               outlineColor: 'brand.red',
               outlineOffset: '3px',
             }}
-            onClick={increment}
+            onClick={handleIncrement}
             aria-label={`Increment counter, current value is ${count}`}
           >
             +1
@@ -85,7 +127,7 @@ export function CounterControls() {
             <Button
               size="sm"
               variant="outline"
-              borderColor="brand.border"
+              borderColor="#cccccc"
               color="brand.dark"
               borderRadius="8px"
               fontWeight="500"
@@ -95,7 +137,7 @@ export function CounterControls() {
                 outlineColor: 'brand.purple',
                 outlineOffset: '3px',
               }}
-              onClick={decrement}
+              onClick={handleDecrement}
               aria-label={`Decrement counter, current value is ${count}`}
             >
               −1
@@ -118,7 +160,7 @@ export function CounterControls() {
                 outlineColor: 'brand.purple',
                 outlineOffset: '3px',
               }}
-              onClick={reset}
+              onClick={handleReset}
               aria-label="Reset counter to zero"
             >
               Reset
